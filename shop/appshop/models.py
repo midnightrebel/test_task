@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 
@@ -39,8 +41,8 @@ class Schedule(models.Model):
     weekday = models.IntegerField(
         choices=WORKDAYS,
         unique=True)
-    from_hour = models.TimeField()
-    to_hour = models.TimeField()
+    from_hour = models.TimeField(default=datetime.time(9, 00))
+    to_hour = models.TimeField(default=datetime.time(18, 00))
     class Meta:
         verbose_name = 'Расписание магазина'
         verbose_name_plural = 'Расписание магазинов'
@@ -50,11 +52,11 @@ class Schedule(models.Model):
 
 class Shop(models.Model):
     name = models.CharField(max_length=255,verbose_name='Название магазина')
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE,blank=True,null=True,related_name='city')
     street = models.OneToOneField(Street, on_delete=models.CASCADE)
     home_number = models.IntegerField(verbose_name='Номер дома')
     schedule = models.ManyToManyField(Schedule, verbose_name='Расписание магазина')
-
+    isOpened = models.BooleanField(default=False)
     def __str__(self):
         return f'{self.name}'
     class Meta:

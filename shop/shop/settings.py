@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_json_api',
+    'django_filters',
     'appshop.apps.AppshopConfig',
 ]
 
@@ -53,7 +54,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'shop.urls'
-
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
