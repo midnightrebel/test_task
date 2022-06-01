@@ -14,3 +14,7 @@ source venv/bin/activate/
 cd shop
 python manage.py runserver
 ```
+Логин и пароль от админки:
+```
+admn:pass
+```
