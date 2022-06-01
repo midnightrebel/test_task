@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-ij&hk^o&+5#j7utx6j#_0j=mva!o_!rv2%@hflf%sg&x9dkh^n'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_json_api',
     'django_filters',
+    'django_property_filter',
     'appshop.apps.AppshopConfig',
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

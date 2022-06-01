@@ -4,8 +4,13 @@ from django.db import models
 
 
 # Create your models here.
+
 from rest_framework import request
 from rest_framework.reverse import reverse
+from django.utils.timezone import now, localtime
+
+from shop import settings
+
 
 
 class City(models.Model):
@@ -17,7 +22,7 @@ class City(models.Model):
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
 
-    def get_absolute_url(self):  # название по соглашению
+    def get_absolute_url(self):
         return reverse('city', kwargs={"city_id": self.pk},request=request)
 
 
@@ -32,33 +37,6 @@ class Street(models.Model):
         verbose_name_plural = 'Улицы'
 
 
-WORKDAYS = [
-    (1, "Monday"),
-    (2, "Tuesday"),
-    (3, "Wednesday"),
-    (4, "Thursday"),
-    (5, "Friday"),
-]
-
-
-
-class Schedule(models.Model):
-
-    weekday = models.IntegerField(
-        choices=WORKDAYS,
-        unique=True)
-    from_hour = models.TimeField(default=datetime.time(9, 00))
-    to_hour = models.TimeField(default=datetime.time(18, 00))
-    def __str__(self):
-        return "%(weekday)s (%(from_hour)s - %(to_hour)s)" % {
-            'weekday': self.weekday,
-            'from_hour': self.from_hour,
-            'to_hour': self.to_hour
-        }
-    class Meta:
-        verbose_name = 'Расписание магазина'
-        verbose_name_plural = 'Расписание магазинов'
-        ordering = ['weekday']
 
 
 
@@ -68,19 +46,32 @@ class Shop(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE,related_name='cities')
     street = models.ForeignKey(Street, on_delete=models.CASCADE)
     house_number = models.PositiveIntegerField(verbose_name='Номер дома')
-    schedule = models.ManyToManyField(Schedule, verbose_name='Расписание магазина',related_name='schedule')
-    isOpened = models.BooleanField(default=False)
+    opening_time = models.TimeField(default=datetime.time(9, 00))
+    close_time = models.TimeField(default=datetime.time(18, 00))
+    isOpened = models.BooleanField()
 
+
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
     @property
     def cityname(self):
         return self.city.name
     def streetname(self):
         return self.street.name
+    def open(self):
+        now = localtime().time()
+        if self.opening_time < now < self.close_time:
+            self.isOpened = True
+        else:
+            self.isOpened = False
+        return self.isOpened
 
-    def get_absolute_url(self):  # название по соглашению
-        return reverse('shop', kwargs={"shop_id": self.pk},request=request)
-    def __str__(self):
-        return f'{self.name}'
-    class Meta:
-        verbose_name = 'Магазин'
-        verbose_name_plural = 'Магазины'
+
+
+
+
