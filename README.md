@@ -4,9 +4,9 @@
 
 2.Активировать виртуальное окружение.
 ```
--Windows
+- Windows
 .\venv\Scripts\activate
--Linux
+- Linux
 source venv/bin/activate/
 ```
 3.Зайти в папку Shop и запустить dev-сервер.
