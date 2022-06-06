@@ -12,15 +12,15 @@ from .serializers import CitySerializator, ShopSerializator, StreetSerializer
 class CityAPIView(generics.ListAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializator
-    filterset_class = ShopFilter
+    filterset_fields = ['name']
 
 class StreetAPIView(generics.ListAPIView):
-    def get_queryset(self):
-        return Street.objects.filter(city_id=self.kwargs['city_id']).select_related('city')
+    # def get_queryset(self):
+    #     return Street.objects.filter(city_id=self.kwargs['city_id']).select_related('city')
 
-    queryset = get_queryset
+    queryset = Street.objects.all()
     serializer_class = StreetSerializer
-    filterset_class = ShopFilter
+    filterset_fields = ['city']
 
 class ShopViewSet(viewsets.ModelViewSet):
     serializer_class = ShopSerializator
