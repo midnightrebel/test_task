@@ -18,7 +18,7 @@ class ShopFilter(filters.FilterSet):
         model = Shop
         fields = ['street', 'city']
 
-    def filter_time(self, queryset, value):
+    def filter_time(self, queryset,name, value):
         filtered_queryset = queryset.all()
 
         if value == True:
