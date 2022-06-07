@@ -15,9 +15,13 @@ source venv/bin/activate/
 ```
 pip install -r r.txt
 ```
-4.Зайти в папку Shop и запустить dev-сервер.
+4.Зайти в папку application и применить миграции.
 ```
 cd application
+python manage.py migrate
+```
+5.Запустить сервер.
+```
 python manage.py runserver
 ```
 
