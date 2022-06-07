@@ -34,15 +34,20 @@ class ShopSerializator(serializers.ModelSerializer):
     def validate(self, data):
         if re.match(r'\d', data['name']):
             raise ValidationError("Название не должно начинаться с цифры.")
+
         if data['house_number'] <= 0 or data['house_number'] > 200:
             raise ValidationError("Введите корректный номер дома")
+
         if data['opening_time'] >= data['close_time']:
             raise ValidationError("Введено некорректное значения времени открытия.")
+
         shop_name = data['name']
         city_location = data['city']
         street_location = data['street']
+
         if shop_name != '':
             product_list = Shop.objects.filter(name=shop_name, city=city_location, street=street_location)
+
         if product_list:
             raise ValidationError("Магазин уже существует")
         return data

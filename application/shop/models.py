@@ -6,7 +6,7 @@ from rest_framework import request
 from rest_framework.reverse import reverse
 
 
-# Create your models here.
+
 
 
 class City(models.Model):

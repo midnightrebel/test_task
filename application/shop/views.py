@@ -1,7 +1,8 @@
-# Create your views here.
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from .filters import ShopFilter
@@ -12,7 +13,7 @@ from .serializers import CitySerializator, ShopSerializator, StreetSerializer
 class CityAPIView(generics.ListAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializator
-    filterset_class = ShopFilter
+    filterset_fields = ['name']
 
 class StreetAPIView(generics.ListAPIView):
     def get_queryset(self):
@@ -20,7 +21,7 @@ class StreetAPIView(generics.ListAPIView):
 
     queryset = get_queryset
     serializer_class = StreetSerializer
-    filterset_class = ShopFilter
+    filterset_fields = ['city']
 
 class ShopViewSet(viewsets.ModelViewSet):
     serializer_class = ShopSerializator
@@ -30,12 +31,15 @@ class ShopViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            shop = serializer.save()
-            sid = shop.id
-            data = serializer.data
-            data.clear()
-            data.update({'id:': sid})
-            return Response(data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if not serializer.is_valid():
+            raise ValidationError()
+
+        shop = serializer.save()
+        sid = shop.id
+        data = serializer.data
+        data.clear()
+        data.update({'id:': sid})
+
+        return Response(data, status=status.HTTP_201_CREATED)
+

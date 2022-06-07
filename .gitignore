@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.pycache
 *.py[cod]
 *$py.class
 
@@ -8,6 +9,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.idea
 build/
 develop-eggs/
 dist/
@@ -102,7 +104,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-shop/.env
+
 .venv
 env/
 venv/
