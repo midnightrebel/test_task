@@ -16,9 +16,6 @@ class CityAPIView(generics.ListAPIView):
     filterset_fields = ['name']
 
 class StreetAPIView(generics.ListAPIView):
-    # def get_queryset(self):
-    #     return Street.objects.filter(city_id=self.kwargs['city_id']).select_related('city')
-
     queryset = Street.objects.all()
     serializer_class = StreetSerializer
     filterset_fields = ['city']
