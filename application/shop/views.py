@@ -30,7 +30,7 @@ class ShopViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data)
 
         if not serializer.is_valid():
-            raise ValidationError()
+            raise ValidationError(serializer.errors)
 
         shop = serializer.save()
         sid = shop.id
