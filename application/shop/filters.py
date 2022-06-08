@@ -1,9 +1,8 @@
 from datetime import datetime
-
 from django.utils.timezone import localtime
 from django_filters import rest_framework as filters
 from .models import Shop
-
+from django.db.models import Q
 
 class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
     pass
@@ -14,17 +13,9 @@ class ShopFilter(filters.FilterSet):
     city = CharFilterInFilter(field_name='city__name', lookup_expr='in')
     isOpened = filters.BooleanFilter(label='Filter', method='filter_time')
 
-    class Meta:
-        model = Shop
-        fields = ['street', 'city']
 
     def filter_time(self, queryset,name, value):
-        filtered_queryset = queryset.all()
-
         if value == True:
             return queryset.filter(opening_time__lt=localtime().time(), close_time__gt=localtime().time())
-
-        part1 = queryset.filter(close_time__lte=localtime().time())
-        part2 = queryset.filter(opening_time__gte=localtime().time())
-        filtered_queryset = part1 | part2
-        return filtered_queryset
+        return queryset.filter(Q(close_time__lte=localtime().time()) |
+                                Q(opening_time__gte=localtime().time()))

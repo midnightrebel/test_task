@@ -50,16 +50,4 @@ class Shop(models.Model):
         verbose_name = 'Магазин'
         verbose_name_plural = 'Магазины'
 
-    @property
-    def cityname(self):
-        return self.city.name
 
-    def streetname(self):
-        return self.street.name
-
-    def open(self):
-        now = localtime().time()
-        if self.opening_time < now < self.close_time:
-            return True
-        else:
-            return False

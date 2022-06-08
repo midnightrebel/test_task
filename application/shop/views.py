@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .filters import ShopFilter
 from .models import City, Street, Shop
-from .serializers import CitySerializator, ShopSerializator, StreetSerializer
+from .serializers import CitySerializator, ShopSerializator, StreetSerializer, ShopCreate
 
 
 class CityAPIView(generics.ListAPIView):
@@ -15,7 +15,7 @@ class CityAPIView(generics.ListAPIView):
     filterset_fields = ['name']
 
 class StreetAPIView(generics.ListAPIView):
-    queryset = Street.objects.all()
+    queryset = Street.objects.select_related('city')
     serializer_class = StreetSerializer
     filterset_fields = ['city']
 
@@ -23,19 +23,10 @@ class ShopViewSet(viewsets.ModelViewSet):
     serializer_class = ShopSerializator
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ShopFilter
-    queryset = Shop.objects.all()
+    queryset = Shop.objects.select_related('street','city')
 
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-
-        if not serializer.is_valid():
-            raise ValidationError(serializer.errors)
-
-        shop = serializer.save()
-        sid = shop.id
-        data = serializer.data
-        data.clear()
-        data.update({'id:': sid})
-
-        return Response(data, status=status.HTTP_201_CREATED)
+    def create(self, request, *args, **kwargs):
+        serialzer = ShopCreate(data=request.data)
+        serialzer.is_valid(raise_exception=True)
+        return Response({"id":serialzer.save().pk}, status=status.HTTP_200_OK)
 
