@@ -6,9 +6,6 @@ from rest_framework import request
 from rest_framework.reverse import reverse
 
 
-
-
-
 class City(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название города')
 
@@ -49,5 +46,3 @@ class Shop(models.Model):
     class Meta:
         verbose_name = 'Магазин'
         verbose_name_plural = 'Магазины'
-
-

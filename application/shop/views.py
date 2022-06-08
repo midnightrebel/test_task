@@ -14,19 +14,20 @@ class CityAPIView(generics.ListAPIView):
     serializer_class = CitySerializator
     filterset_fields = ['name']
 
+
 class StreetAPIView(generics.ListAPIView):
     queryset = Street.objects.select_related('city')
     serializer_class = StreetSerializer
     filterset_fields = ['city']
 
+
 class ShopViewSet(viewsets.ModelViewSet):
     serializer_class = ShopSerializator
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ShopFilter
-    queryset = Shop.objects.select_related('street','city')
+    queryset = Shop.objects.select_related('street', 'city')
 
     def create(self, request, *args, **kwargs):
         serialzer = ShopCreate(data=request.data)
         serialzer.is_valid(raise_exception=True)
-        return Response({"id":serialzer.save().pk}, status=status.HTTP_200_OK)
-
+        return Response({"id": serialzer.save().pk}, status=status.HTTP_200_OK)
