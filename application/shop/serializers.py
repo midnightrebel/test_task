@@ -55,6 +55,12 @@ class ShopCreate(serializers.ModelSerializer):
 
         if product_list:
             raise ValidationError("Магазин уже существует")
+
+        if street_location != '':
+            street_list = Street.objects.filter(city = city_location)
+
+        if not street_list.exists():
+            raise ValidationError('Такой улицы нет в городе.')
         return data
 
     def create(self, validated_data):
