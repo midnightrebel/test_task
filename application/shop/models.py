@@ -1,7 +1,6 @@
 import datetime
 
 from django.db import models
-from django.utils.timezone import localtime
 from rest_framework import request
 from rest_framework.reverse import reverse
 
@@ -21,7 +20,7 @@ class City(models.Model):
 
 
 class Street(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Название улицы',unique=True)
+    name = models.CharField(max_length=255, verbose_name='Название улицы', unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Название города')
 
     def __str__(self):

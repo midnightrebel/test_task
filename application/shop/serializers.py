@@ -61,11 +61,8 @@ class ShopCreate(serializers.ModelSerializer):
 
         if not street_list.exists():
             raise ValidationError('Такой улицы нет в городе.')
-        return data
 
-    def create(self, validated_data):
-        id = validated_data.get('pk', None)
-        return Shop.objects.create(id=id, **validated_data)
+        return data
 
 
 class StreetSerializer(serializers.ModelSerializer):

@@ -1,8 +1,6 @@
-from datetime import datetime
+from django.db.models import Q
 from django.utils.timezone import localtime
 from django_filters import rest_framework as filters
-from .models import Shop
-from django.db.models import Q
 
 
 class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
