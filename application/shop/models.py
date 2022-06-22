@@ -21,7 +21,7 @@ class City(models.Model):
 
 
 class Street(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Название улицы')
+    name = models.CharField(max_length=255, verbose_name='Название улицы',unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Название города')
 
     def __str__(self):
