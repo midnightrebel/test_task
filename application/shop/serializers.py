@@ -49,7 +49,7 @@ class ShopCreate(serializers.ModelSerializer):
         shop_name = data['name']
         city_location = data['city']
         street_location = data['street']
-
+        house_number = data['house_number']
         if shop_name != '':
             product_list = Shop.objects.filter(name=shop_name, city=city_location, street=street_location)
 
@@ -61,7 +61,11 @@ class ShopCreate(serializers.ModelSerializer):
 
         if not street_list.exists():
             raise ValidationError('Такой улицы нет в городе.')
+        if house_number != '':
+            number_list = Shop.objects.filter(street=street_location, house_number=house_number)
 
+        if number_list.exists():
+            raise ValidationError('Данный дом занят.Для создания введите другой номер')
         return data
 
 
