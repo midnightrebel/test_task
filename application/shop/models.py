@@ -15,9 +15,6 @@ class City(models.Model):
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
 
-    def get_absolute_url(self):
-        return reverse('city', kwargs={"city_id": self.pk}, request=request)
-
 
 class Street(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название улицы', unique=True)

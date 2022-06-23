@@ -83,4 +83,4 @@ class StreetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Street
-        fields = ['pk', 'name', 'city']
+        fields = ['name', 'city']

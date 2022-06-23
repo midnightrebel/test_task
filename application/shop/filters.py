@@ -7,6 +7,10 @@ class CharFilterInFilter(filters.BaseInFilter, filters.CharFilter):
     pass
 
 
+class StreetFilter(filters.FilterSet):
+    city = CharFilterInFilter(field_name='city__name', lookup_expr='in')
+
+
 class ShopFilter(filters.FilterSet):
     street = CharFilterInFilter(field_name='street__name', lookup_expr='in')
     city = CharFilterInFilter(field_name='city__name', lookup_expr='in')

@@ -1,10 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status
 from rest_framework import viewsets
-from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-from .filters import ShopFilter
+from .filters import ShopFilter, StreetFilter
 from .models import City, Street, Shop
 from .serializers import CitySerializator, ShopSerializator, StreetSerializer, ShopCreate
 
@@ -18,7 +17,7 @@ class CityAPIView(generics.ListAPIView):
 class StreetAPIView(generics.ListAPIView):
     queryset = Street.objects.select_related('city')
     serializer_class = StreetSerializer
-    filterset_fields = ['city']
+    filterset_class = StreetFilter
 
 
 class ShopViewSet(viewsets.ModelViewSet):
