@@ -34,7 +34,7 @@ class ShopSerializator(serializers.ModelSerializer):
 class ShopCreate(serializers.ModelSerializer):
     class Meta:
         model = Shop
-        fields = ['pk', 'name', 'city', 'street', 'house_number', 'opening_time', 'close_time']
+        fields = ['name', 'city', 'street', 'house_number', 'opening_time', 'close_time']
 
     def validate(self, data):
         if re.match(r'\d', data['name']):
